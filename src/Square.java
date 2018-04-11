@@ -26,10 +26,9 @@ public class Square {
         return column;
     }
 
-    // Ved ikke den skal bruges endnu
-    /*
-     * public int getBlock(){
-     *
-     * }
-     */
+    public int[] getBlock(){
+        int blockRow = (int)(Math.floor(row / 3));
+        int blockColumn = (int)(Math.floor(column / 3));
+        return new int[]{ blockColumn, blockRow };
+    }
 }
