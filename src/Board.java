@@ -1,5 +1,8 @@
 public class Board {
-    Board(){};
+    Board() {
+        Square[][] board = new Square[9][9];
+    }
+
 
     
 }
