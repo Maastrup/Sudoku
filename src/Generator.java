@@ -1,10 +1,10 @@
 public final class Generator {
     // Returns true if entry is unique in row, column and 3x3-block
-    public static boolean checkEntry(Square entry, Square[][] board){
+    public static boolean checkEntry(int entryRow, int entryColumn){
         // Checks if entry is unique in row
         for(int i = 0; i < 9; i++){
-            if(board[entry.getRow()][i].getColumn() != entry.getColumn()){
-                if(board[entry.getRow()][i].getValue() == entry.getValue()){
+            if(i != entryColumn){
+                if(Board.array[entryRow][i] == Board.array[entryRow][entryColumn]){
                     return false;
                 }
             }
@@ -12,18 +12,21 @@ public final class Generator {
 
         // Checks if entry is unique in column
         for(int i = 0; i < 9; i++){
-            if(board[i][entry.getColumn()].getRow() != entry.getRow()){
-                if(board[i][entry.getColumn()].getValue() == entry.getValue()){
+            if(i != entryRow){
+                if(Board.array[i][entryColumn] == Board.array[entryRow][entryColumn]){
                     return false;
                 }
             }
         }
 
+        // Getting which block entry is a part of
+        int blockRow = (int)(Math.floor(entryRow / 3));
+        int blockColumn = (int)(Math.floor(entryColumn / 3));
+
         // Checks if entry is unique in 3x3-block
-        // Square.getBlock()[0] returns column, while Square.getBlock()[1] returns row
-        for(int i = entry.getBlock()[0]; i < 3; i++){
-            for(int j = entry.getBlock()[1]; i < 3; i++){
-                if(board[i][j].getValue() == entry.getValue()){
+        for(int i = blockRow; i < 3; i++){
+            for(int j = blockColumn; j < 3; j++){
+                if(Board.array[i][j] == Board.array[entryRow][entryColumn]){
                     return false;
                 }
             }
