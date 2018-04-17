@@ -1,6 +1,6 @@
 public class Square {
     private int value;
-    boolean hasValue = false;
+    boolean ComputerOwned = false;
     private int row;
     private int column;
 
