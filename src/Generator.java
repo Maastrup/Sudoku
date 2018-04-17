@@ -26,8 +26,10 @@ public final class Generator {
         // Checks if entry is unique in 3x3-block
         for(int i = blockRow; i < 3; i++){
             for(int j = blockColumn; j < 3; j++){
-                if(Board.array[i][j] == Board.array[entryRow][entryColumn]){
-                    return false;
+                if(i != entryRow && j != entryColumn){
+                    if(Board.array[i][j] == Board.array[entryRow][entryColumn]){
+                        return false;
+                    }
                 }
             }
         }
