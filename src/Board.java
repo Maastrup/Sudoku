@@ -1,12 +1,18 @@
-public class Board {
-    public static int[][] array = new int[9][9];
+import java.util.Arrays;
 
-    public static void addEntry(int row, int column, char value){
+public class Board {
+    static int[][] array = new int[9][9];
+
+    static void addEntry(int row, int column, char value){
         int intValue = value - 48;
         array[row][column] = intValue;
     }
 
-    public void resetBoard() {
+    static void resetBoard() {
         array = new int[9][9];
+    }
+
+    static void print() {
+        System.out.println(Arrays.deepToString(array));
     }
 }
