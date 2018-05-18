@@ -1,16 +1,22 @@
 public class Game {
 
     public static void main(String[] args){
+        Board gameBoard = new Board();
 
-        char test = '4';
-        Board.addEntry(1,0, test);
-        Board.addEntry(0, 5, '4');
+        // Tries to generate af board until a valid one emerges
+        boolean boardInProgress = true;
+        while(boardInProgress) {
+            try {
+                Generator.generate(gameBoard);
+            } catch (Exception e) {
+                //e.printStackTrace();
+                continue;
+            }
 
-        Board.print();
+            boardInProgress = false;
+        }
+        gameBoard.print();
 
-        Generator.fillBoard();
-
-        System.out.println();
-        Board.print();
+        // Generator.generate(gameBoard);
     }
 }
