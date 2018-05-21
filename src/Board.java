@@ -1,13 +1,11 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Board {
     private int[][] array = new int[9][9];
 
     public boolean isEmpty(int column, int row){
         // Remember this is a conditional statement!
-        boolean test = (this.getValueAt(column, row) == -1);
-        return test;
+        return this.getValueAt(column, row) == -1;
     }
 
     public void addEntry(int column, int row, char value){
@@ -20,29 +18,30 @@ public class Board {
     }
 
     public void print() {
+        char boxSeparator = '|';
         for(int i = 0; i < 9; i++){
             if(i % 3 == 0){
-                System.out.println(" *-----------------------*");
+                System.out.println(" *-------*-------*-------*");
             }
             for(int j = 0; j < 9; j++){
                 if(j % 3 == 0){
                     if (this.isEmpty(j, i)) {
-                        System.out.printf("|   ");
+                        System.out.printf("%2c  ", boxSeparator);
                     } else {
                         // %2d gives value the space of 2 characters one is a space
-                        System.out.printf(" |%2d", this.getValueAt(j, i));
+                        System.out.printf("%2c%2d", boxSeparator, this.getValueAt(j, i));
                     }
                 } else {
                     if (this.isEmpty(j, i)) {
-                        System.out.printf("  ");
+                        System.out.print("  ");
                     } else {
                         System.out.printf("%2d", this.getValueAt(j, i));
                     }
                 }
             }
-            System.out.printf(" |\n");
+            System.out.printf("%2c\n", boxSeparator);
         }
-        System.out.println(" *-----------------------*");
+        System.out.println(" *-------*-------*-------*");
     }
 
     public void reset(){

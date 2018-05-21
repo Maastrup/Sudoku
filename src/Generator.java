@@ -1,7 +1,7 @@
 import java.util.*;
 
 public final class Generator {
-    static Board availableBoard = new Board();
+    private static Board availableBoard = new Board();
 
     // Returns true if entry is unique in row, column and 3x3-block
     static boolean checkEntry(int entryRow, int entryColumn, Board board){
@@ -40,8 +40,7 @@ public final class Generator {
         return true;
     }
 
-    // TODO: fix numbers being placed in taken squares with availableBoard buffer array
-    static void generate(Board board) throws Exception {
+    private static int fill(Board board){
         board.reset();
         // Loops through the numbers going into the array from 1 till 9 included
         // Uses 'n' as iterator for 'number'
@@ -54,9 +53,9 @@ public final class Generator {
                 ArrayList<Integer> preFilled = board.getColumns(i);
                 availableColumns.removeIf(e -> preFilled.contains(e));
 
-                // Throws exception if no columns are available
+                // Exits function in case no columns are available
                 if (availableColumns.size() == 0) {
-                    throw new Exception();
+                    return -1;
                 }
 
                 int randIndex;
@@ -67,56 +66,53 @@ public final class Generator {
                 // Makes column at 'randIndex' unavailable until 'n' increments
                 availableBoard.emptyColumn(availableColumns.get(randIndex));
                 // Makes columns in the same block as (randIndex, i) unavailable
-                // TODO: numbers can end up in same block - fix please
                 availableBoard.emptyBlockAt(availableColumns.get(randIndex), i);
             }
         }
-        /*
-        for(int i = 1; i < 10; i++){
-            List<Integer> availableColumns = new ArrayList<>(Arrays.asList(0,1,2,3,4,5,6,7,8));
-            List<Integer> blockBuffer = new ArrayList<>(availableColumns);
+        return 0;
+    }
 
-            for(int j = 0; j < 9; j++){
-                if(j % 3 == 0){
-                    blockBuffer = new ArrayList<>(availableColumns);
-                }
-
-
-                int columnIndex = new Random().nextInt(blockBuffer.size());
-
-                Board.addEntry(blockBuffer.get(columnIndex), j, i);
-                // Removes the column where entry was added from possible columns
-                availableColumns.remove(blockBuffer.get(columnIndex));
-
-                // Removes columns in the block where entry was added from possible columns
-                switch (blockBuffer.get(columnIndex) / 3){
-                    case 0:
-                        for(int k = 0; k < 3; k++) {
-                            // the 'final' statement is redundant here, but I left in
-                            // because it shows why k can't be used (lambda expressions rules)
-                            final int number = k;
-                            blockBuffer.removeIf(element -> element == number);
-                        }
-                        break;
-                    case 1:
-                        for(int k = 3; k < 6; k++) {
-                            final int number = k;
-                            blockBuffer.removeIf(element -> element == number);
-                        }
-                        break;
-                    case 2:
-                        for(int k = 6; k < 9; k++) {
-                            final int number = k;
-                            blockBuffer.removeIf(element -> element == number);
-                        }
-                        break;
-                    default:
-                        System.out.println("Error when removing block from blockBuffer");
-                        break;
-                }
+    static void generate(Board board){
+        boolean boardInProgress = true;
+        // Continues until valid board emerges
+        while(boardInProgress) {
+            if(Generator.fill(board) == 0){
+                boardInProgress = false;
             }
         }
-        */
+        Generator.pop(board);
+    }
 
+    // int difficulty must be between 0 and 61
+    private static void pop(Board board){
+        int remainingNumbers = 81;
+        int input;
+        System.out.println("Enter how many numbers you want to start out with (minimum of 20 and maximum of 81):");
+        while(true){
+            // Handles when user enters something thats not a valid Integer-object
+            try {
+                input = new Scanner(System.in).nextInt();
+            } catch (Exception e) {
+                System.out.println("Please enter a valid integer within the given range");
+                continue;
+            }
+
+            // Makes sure the integer is within my given range
+            if(20 <= input && input <= 81){
+                break;
+            } else {
+                System.out.println("Please enter an integer that is between 20 and 81 both included");
+            }
+        }
+
+        while(remainingNumbers > input){
+            int randCol = new Random().nextInt(9);
+            int randRow = new Random().nextInt(9);
+
+            if(!board.isEmpty(randCol, randRow)){
+                board.addEntry(randCol, randRow, -1);
+                remainingNumbers--;
+            }
+        }
     }
 }
